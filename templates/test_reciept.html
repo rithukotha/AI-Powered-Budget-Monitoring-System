@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Receipt</title>
+    <style>
+        body {
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+        }
+        .receipt {
+            width: 400px;
+            background: white;
+            padding: 30px;
+            border: 2px solid #333;
+        }
+        h2 { text-align: center; }
+        .item { display: flex; justify-content: space-between; }
+        .total { font-weight: bold; border-top: 2px dashed #333; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <h2>COFFEE SHOP</h2>
+        <p>Date: 27/02/2026</p>
+        <p>Time: 14:30</p>
+        <hr>
+        <div class="item">Coffee <span>₹150.00</span></div>
+        <div class="item">Sandwich <span>₹250.00</span></div>
+        <div class="item">Cookie <span>₹80.00</span></div>
+        <hr>
+        <div class="item total">Total <span>₹480.00</span></div>
+        <p style="text-align: center; margin-top: 20px;">Thank you!</p>
+    </div>
+</body>
+</html>

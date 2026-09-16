@@ -1,0 +1,107 @@
+text,category
+supermarket bill,Groceries
+grocery store invoice,Groceries
+vegetable purchase,Groceries
+fruit market bill,Groceries
+kirana store bill,Groceries
+provisions store,Groceries
+dairy products bill,Groceries
+super market receipt,Groceries
+grocery shopping,Groceries
+monthly groceries,Groceries
+supermarket billing,Groceries
+grocery items,Groceries
+fresh vegetables,Groceries
+organic store,Groceries
+supermarket invoice,Groceries
+
+kfc bill,Food & Dining
+dominos invoice,Food & Dining
+restaurant payment,Food & Dining
+swiggy order receipt,Food & Dining
+zomato food bill,Food & Dining
+tea coffee snacks,Food & Dining
+grocery store bill,Food & Dining
+bakery purchase receipt,Food & Dining
+cafe bill payment,Food & Dining
+hotel food invoice,Food & Dining
+lunch at canteen,Food & Dining
+dinner restaurant bill,Food & Dining
+
+uber trip receipt,Transportation
+ola cab payment,Transportation
+bus ticket,Transportation
+metro recharge receipt,Transportation
+fuel station bill,Transportation
+petrol pump invoice,Transportation
+diesel fuel bill,Transportation
+train ticket booking,Transportation
+auto rickshaw fare,Transportation
+cab service invoice,Transportation
+parking fee receipt,Transportation
+toll gate payment,Transportation
+
+amazon purchase invoice,Shopping
+flipkart order bill,Shopping
+clothing store receipt,Shopping
+electronics purchase,Shopping
+shopping mall bill,Shopping
+online shopping invoice,Shopping
+mobile phone purchase,Shopping
+laptop accessories bill,Shopping
+footwear store receipt,Shopping
+fashion outlet bill,Shopping
+gadget store invoice,Shopping
+home appliance purchase,Shopping
+
+electricity board bill,Bills & Utilities
+mobile recharge receipt,Bills & Utilities
+internet service bill,Bills & Utilities
+gas cylinder bill,Bills & Utilities
+water bill payment,Bills & Utilities
+wifi monthly bill,Bills & Utilities
+broadband invoice,Bills & Utilities
+postpaid mobile bill,Bills & Utilities
+cable tv bill,Bills & Utilities
+electric meter recharge,Bills & Utilities
+utility service payment,Bills & Utilities
+house maintenance bill,Bills & Utilities
+
+movie ticket booking,Entertainment
+netflix subscription receipt,Entertainment
+ott platform payment,Entertainment
+concert ticket bill,Entertainment
+gaming subscription receipt,Entertainment
+cinema hall ticket,Entertainment
+amusement park entry,Entertainment
+music streaming subscription,Entertainment
+sports event ticket,Entertainment
+party expense receipt,Entertainment
+weekend outing bill,Entertainment
+online game purchase,Entertainment
+
+pharmacy bill,Healthcare
+apollo hospital invoice,Healthcare
+medicine purchase receipt,Healthcare
+doctor consultation bill,Healthcare
+medical lab report bill,Healthcare
+clinic visit invoice,Healthcare
+health checkup bill,Healthcare
+diagnostic test receipt,Healthcare
+eye hospital bill,Healthcare
+dental treatment invoice,Healthcare
+medical insurance payment,Healthcare
+vaccination charge receipt,Healthcare
+
+college fee receipt,Education
+online course payment,Education
+bookstore bill,Education
+exam registration fee,Education
+training program invoice,Education
+tuition fee payment,Education
+certification course bill,Education
+workshop registration fee,Education
+educational seminar payment,Education
+library membership bill,Education
+skill development course,Education
+learning platform subscription,Education

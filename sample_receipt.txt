@@ -1,0 +1,15 @@
+
+    KFC Restaurant
+    Date: 15/03/2024
+    Time: 19:30
+    
+    2x Zinger Burger     ₹350.00
+    1x Pepsi             ₹60.00
+    1x Fries             ₹90.00
+    
+    Subtotal:           ₹500.00
+    Tax (10%):          ₹50.00
+    Total:              ₹550.00
+    
+    Thank you for visiting!
+    

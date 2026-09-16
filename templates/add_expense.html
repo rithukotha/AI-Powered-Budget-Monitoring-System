@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Add Expense - AI Budget Monitor{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-robot"></i>
+                <span>Add Expense</span>
+            </div>
+            <p class="auth-subtitle">Add a new expense with AI assistance</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('add_expense') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="amount">Amount (₹)</label>
+                <div class="amount-input">
+                    <input type="number" class="form-control" id="amount" name="amount" 
+                           placeholder="0.00" step="0.01" min="0" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description" 
+                       placeholder="Enter description (e.g., 'Dinner at restaurant')"
+                       oninput="predictCategory(this.value)">
+                <small class="text-muted">AI will predict category based on description</small>
+                <div id="categoryPrediction" class="mt-2"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Food & Dining" {% if category == 'Food & Dining' %}selected{% endif %}>Food & Dining</option>
+                    <option value="Transportation" {% if category == 'Transportation' %}selected{% endif %}>Transportation</option>
+                    <option value="Shopping" {% if category == 'Shopping' %}selected{% endif %}>Shopping</option>
+                    <option value="Entertainment" {% if category == 'Entertainment' %}selected{% endif %}>Entertainment</option>
+                    <option value="Bills & Utilities" {% if category == 'Bills & Utilities' %}selected{% endif %}>Bills & Utilities</option>
+                    <option value="Healthcare" {% if category == 'Healthcare' %}selected{% endif %}>Healthcare</option>
+                    <option value="Groceries" {% if category == 'Groceries' %}selected{% endif %}>Groceries</option>
+                    <option value="Education" {% if category == 'Education' %}selected{% endif %}>Education</option>
+                    <option value="Travel" {% if category == 'Travel' %}selected{% endif %}>Travel</option>
+                    <option value="Other" {% if category == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" id="date" name="date" 
+                       value="{{ datetime.utcnow().date().isoformat() }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="receipt_image">Receipt Image (Optional)</label>
+                <input type="file" class="form-control" id="receipt_image" name="receipt_image" 
+                       accept="image/*">
+                <small class="text-muted">Upload receipt for OCR processing</small>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-plus-circle"></i> Add Expense
+                </button>
+            </div>
+            
+            <div class="text-center">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-link">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function predictCategory(description) {
+    if (description.length < 3) return;
+    
+    fetch('/predict_category', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: description })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('categoryPrediction').innerHTML = 
+                `<div class="alert alert-info">
+                    <i class="fas fa-robot"></i> AI predicts: <strong>${data.category}</strong>
+                </div>`;
+            document.getElementById('category').value = data.category;
+        }
+    })
+    .catch(error => {
+        console.error('Error predicting category:', error);
+    });
+}
+</script>
+{% endblock %}

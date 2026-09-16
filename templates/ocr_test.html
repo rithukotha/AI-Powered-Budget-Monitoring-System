@@ -1,0 +1,492 @@
+<!-- templates/ocr_test.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Test Page - AI Budget Monitor</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 16px;
+            padding: 50px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9ff;
+            margin-bottom: 30px;
+        }
+        .upload-area:hover {
+            background: #e8ebff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        .upload-area.dragover {
+            background: #d0d7ff;
+            border-color: #5a67d8;
+        }
+        .upload-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .upload-text {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .upload-hint {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f0fe;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .loading i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .loading p {
+            color: #333;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            animation: progress 2s infinite;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+            border-left: 5px solid #667eea;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .result-header i {
+            font-size: 2.5rem;
+            color: #27ae60;
+        }
+        .result-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .result-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .result-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .result-value.amount {
+            color: #27ae60;
+        }
+        .result-value.category {
+            color: #667eea;
+        }
+        .text-preview {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border: 1px solid #e0e0e0;
+        }
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 5px solid #c33;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 15px;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-uploading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .nav-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <div>
+                <h1>🧪 OCR Test Page</h1>
+                <p class="subtitle">Upload a receipt to test text extraction and category prediction</p>
+            </div>
+            <a href="{{ url_for('dashboard') }}" class="nav-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+        
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <p class="upload-text">Click to upload or drag and drop</p>
+            <p class="upload-hint">Supported formats: JPG, PNG, GIF, BMP (Max 5MB)</p>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            <div id="fileInfo" class="file-info" style="display: none;"></div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Processing Receipt</h3>
+            <p>Our AI is analyzing your receipt...</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="font-size: 0.9rem; color: #666;">This may take a few seconds</p>
+        </div>
+        
+        <div id="result" style="display: none;"></div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        async function handleFile(file) {
+            // Validate file
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size should be less than 5MB');
+                return;
+            }
+
+            // Show file info
+            fileInfo.style.display = 'block';
+            fileInfo.innerHTML = `
+                <i class="fas fa-check-circle" style="color: #27ae60;"></i>
+                Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)
+            `;
+
+            // Show loading
+            uploadArea.style.opacity = '0.5';
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            const reader = new FileReader();
+            
+            reader.onload = async function(e) {
+                const imageData = e.target.result;
+                
+                try {
+                    const response = await fetch('/process_receipt', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ image_data: imageData })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Hide loading
+                    loading.style.display = 'none';
+                    uploadArea.style.opacity = '1';
+                    
+                    if (data.success) {
+                        displayResults(data, imageData);
+                    } else {
+                        result.innerHTML = `
+                            <div class="error">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Processing Failed</h3>
+                                <p>${data.message || 'Could not process the receipt. Please try again.'}</p>
+                                <button class="btn btn-primary" onclick="resetUpload()">
+                                    <i class="fas fa-redo"></i> Try Again
+                                </button>
+                            </div>
+                        `;
+                        result.style.display = 'block';
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    loading.style.display = 'none';
+                    uploadArea.style.opacity = '1';
+                    
+                    result.innerHTML = `
+                        <div class="error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error</h3>
+                            <p>${error.message}</p>
+                            <button class="btn btn-primary" onclick="resetUpload()">
+                                <i class="fas fa-redo"></i> Try Again
+                            </button>
+                        </div>
+                    `;
+                    result.style.display = 'block';
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function displayResults(data, imageData) {
+            const amount = data.extracted_amount ? `₹${data.extracted_amount.toFixed(2)}` : 'Not detected';
+            const category = data.predicted_category || 'Not detected';
+            const date = data.extracted_date || 'Not detected';
+            
+            result.innerHTML = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h3>OCR Results</h3>
+                            <span class="status-badge status-success">Successfully Processed</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">💰 Amount</div>
+                            <div class="result-value amount">${amount}</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">📂 Category</div>
+                            <div class="result-value category">${category}</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">📅 Date</div>
+                            <div class="result-value">${date}</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 20px 0 10px;">📝 Extracted Text</h4>
+                    <div class="text-preview">
+                        ${data.extracted_text || 'No text extracted'}
+                    </div>
+                    
+                    <h4 style="margin: 20px 0 10px;">🖼️ Uploaded Image</h4>
+                    <img src="${imageData}" class="preview-image" alt="Uploaded receipt">
+                    
+                    <div class="button-group">
+                        <button class="btn btn-success" onclick="useInApp(${data.extracted_amount || 0}, '${data.predicted_category || ''}', '${data.extracted_date || ''}')">
+                            <i class="fas fa-check"></i> Use in Expense Form
+                        </button>
+                        <button class="btn btn-primary" onclick="resetUpload()">
+                            <i class="fas fa-redo"></i> Test Another Receipt
+                        </button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                            <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            result.style.display = 'block';
+        }
+
+        function useInApp(amount, category, date) {
+            // Store in session storage
+            sessionStorage.setItem('ocr_amount', amount);
+            sessionStorage.setItem('ocr_category', category);
+            sessionStorage.setItem('ocr_date', date);
+            
+            // Redirect to dashboard with OCR data flag
+            window.location.href = "{{ url_for('dashboard') }}?ocr_data=true";
+        }
+
+        function resetUpload() {
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            result.style.display = 'none';
+            loading.style.display = 'none';
+            uploadArea.style.opacity = '1';
+        }
+    </script>
+</body>
+</html>
